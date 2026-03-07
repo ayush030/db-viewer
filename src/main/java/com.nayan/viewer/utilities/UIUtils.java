@@ -1,14 +1,23 @@
 package com.nayan.viewer.utilities;
 
 import com.nayan.viewer.DatabaseTypes;
-import com.nayan.viewer.utilities.UIConstants;
 
-import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 public class UIUtils {
     private static final HashMap<String, String> defaultConfigValue = new HashMap<>() {
@@ -19,6 +28,7 @@ public class UIUtils {
            put(UIConstants.UsernameFieldLabel, "system");
         }
     };
+
     public static HBox createButtonBox(HashMap<String, Runnable> buttonActions) {
         HBox buttonBox = new HBox(10);
 
@@ -94,5 +104,54 @@ public class UIUtils {
         configGrid.setUserData(textFields);
 
         return configGrid;
+    }
+
+    public static HBox createSearchResultContainer() {
+        HBox searchResultContainer = new HBox(10);
+        searchResultContainer.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;");
+
+        Label searchLabel = new Label("Search");
+        searchLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+
+        ComboBox<String> searchColumnBox = new ComboBox<>();
+        searchColumnBox.setPrefWidth(300);
+
+        String searchConditionPrompt = "bmFtZT0nTmF2aW4nIGFuZCBzdGF0dXM9J3NpbmdsZSc=";
+        Base64.Decoder decoded = Base64.getDecoder();
+        byte[] decodedBytes = decoded.decode(searchConditionPrompt);
+        searchColumnBox.setPromptText(new String(decodedBytes, StandardCharsets.UTF_8));
+
+        searchColumnBox.setOnAction(e -> {
+            String selectedColumn = searchColumnBox.getValue();
+            if (selectedColumn != null && !selectedColumn.isEmpty()) {
+                // Implement search logic based on selected column
+                searchColumnBox.setUserData(selectedColumn);
+
+            }
+        });
+
+        Image reconnImage = new Image("file:images/reconnect.jpeg");
+        ImageView reconnIcon = new ImageView(reconnImage);
+        reconnIcon.setFitHeight(30);
+
+        Button reConnectButton = new Button();
+        reConnectButton.setGraphic(reconnIcon);
+        reConnectButton.setStyle("-fx-background-color: transparent;");
+
+        reConnectButton.setOnMouseEntered(e -> reConnectButton.setText("Reconnect DB"));
+        reConnectButton.setOnMouseExited(e -> reConnectButton.setText(""));
+
+        searchResultContainer.getChildren().addAll(searchLabel, searchColumnBox, reConnectButton);
+        return searchResultContainer;
+    }
+
+    public static VBox createTableListBox(Runnable populateTableList, Runnable onTableSelect) {
+        VBox tableListBox = new VBox(10);
+
+        tableListBox.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;");
+        tableListBox.setPrefWidth(100);
+
+
+        return tableListBox;
     }
 }

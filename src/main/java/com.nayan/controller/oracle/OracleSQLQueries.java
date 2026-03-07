@@ -1,6 +1,6 @@
 package com.nayan.controller.oracle;
 
-public final class SqlStatements {
+public final class OracleSQLQueries {
     // fetch all relations from the database
     public static final String GET_ALL_RELATIONS = "SELECT table_name FROM user_tables";
 

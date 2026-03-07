@@ -13,11 +13,12 @@ import javafx.stage.Stage;
 import com.nayan.viewer.utilities.UIConstants;
 import com.nayan.viewer.utilities.UIUtils;
 import com.nayan.model.Config.DBConfig;
-
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class LoginView {
-    private final Stage primaryStage;
+    private final Stage loginInfoStage;
     private DBConfig dbConfig;
     private final HBox databaseSelectionBox;
     private final GridPane configFieldPane;
@@ -25,7 +26,7 @@ public class LoginView {
     private final Label messageLabel;
 
     public LoginView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+        this.loginInfoStage = primaryStage;
         this.dbConfig = new DBConfig();
 
         // Database Type Selection
@@ -40,7 +41,7 @@ public class LoginView {
 
         HashMap<String, Runnable> buttonActions = new HashMap<>();
         buttonActions.put(UIConstants.TestButtonLabel, this::testDBConnection);
-//        buttonActions.put(UIConstants.OpenButtonLabel, this::OpenConnection);
+        buttonActions.put(UIConstants.OpenButtonLabel, this::OpenConnection);
         buttonActions.put(UIConstants.ClearButtonLabel, this::clearFields);
 
         // Define button actions
@@ -49,9 +50,9 @@ public class LoginView {
     }
 
     public void show() {
-        primaryStage.setTitle("Nayan - Database Viewer");
-        primaryStage.setWidth(800);
-        primaryStage.setHeight(700);
+        loginInfoStage.setTitle("Nayan  -  Database Viewer");
+        loginInfoStage.setWidth(800);
+        loginInfoStage.setHeight(700);
 
         // Create main container
         VBox mainContainer = new VBox(15);
@@ -75,8 +76,8 @@ public class LoginView {
         );
 
         Scene scene = new Scene(mainContainer);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        loginInfoStage.setScene(scene);
+        loginInfoStage.show();
     }
 
     private void testDBConnection() {

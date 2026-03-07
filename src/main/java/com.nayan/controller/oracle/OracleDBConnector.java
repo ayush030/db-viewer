@@ -52,11 +52,12 @@ public class OracleDBConnector extends DBConnector {
         // autocloses DB connection
     }
 
+    @Override
     // getAllRelations : method to fetch all relations from the database
     public ResultSet getAllRelations() {
         ResultSet result = null;
         try (Connection conn = this.getConnection()) {
-            PreparedStatement fetchRelations = conn.prepareStatement(SqlStatements.GET_ALL_RELATIONS);
+            PreparedStatement fetchRelations = conn.prepareStatement(OracleSQLQueries.GET_ALL_RELATIONS);
             result = fetchRelations.executeQuery();
         } catch (SQLException ex) {
             System.err.println("Error in fetching table list " + "\nStack:\n" + ex.getMessage());
@@ -65,12 +66,13 @@ public class OracleDBConnector extends DBConnector {
         return result;
     }
 
+    @Override
     // getAllColumnsForARelation : method to fetch all columns for a given relation
     public ResultSet getAllColumnsForARelation(String tableName) {
         ResultSet result = null;
 
         try (Connection conn = this.getConnection()) {
-            PreparedStatement fetchColumns = conn.prepareStatement(SqlStatements.GET_RELATION_COLUMNS);
+            PreparedStatement fetchColumns = conn.prepareStatement(OracleSQLQueries.GET_RELATION_COLUMNS);
             fetchColumns.setString(1, tableName.toUpperCase());
             result = fetchColumns.executeQuery();
         } catch (SQLException ex) {
@@ -80,12 +82,13 @@ public class OracleDBConnector extends DBConnector {
         return result;
     }
 
+    @Override
     // getAllDataForARelation : method to fetch all data for a given relation
     public ResultSet getAllDataForARelation(String tableName) {
         ResultSet result = null;
 
         try (Connection conn = this.getConnection()) {
-            PreparedStatement fetchData = conn.prepareStatement(SqlStatements.GET_ALL_ROWS);
+            PreparedStatement fetchData = conn.prepareStatement(OracleSQLQueries.GET_ALL_ROWS);
             fetchData.setString(1, tableName.toUpperCase());
             result = fetchData.executeQuery();
         } catch (SQLException ex) {
